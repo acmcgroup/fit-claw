@@ -26,7 +26,12 @@ See `.env.example` for `NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`, Stripe keys, and 
 
 ## Deploy
 
-Connect the repo to Vercel, set environment variables in the project dashboard, and deploy. Configure Stripe webhook URL to `https://<your-domain>/api/webhooks/stripe` after you implement signature verification.
+1. Import the repo in [Vercel](https://vercel.com) and deploy.
+2. **Environment variables** (Production + Preview as needed): copy from `.env.example` — at minimum `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, and `NEXT_PUBLIC_SITE_URL` (`https://your-domain.com`).
+3. **Stripe**: [Dashboard](https://dashboard.stripe.com) → Developers → Webhooks → Add endpoint `https://<your-domain>/api/webhooks/stripe`, event `checkout.session.completed`, then paste the signing secret as `STRIPE_WEBHOOK_SECRET`.
+4. **Test**: `GET /api/checkout` starts Checkout; success page shows the install `curl` line.
+
+Stripe runs **only in server routes** (`/api/*`); secrets never ship to the browser.
 
 ## Repository
 
