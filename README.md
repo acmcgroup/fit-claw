@@ -1,6 +1,6 @@
-# Fit Claw
+# GetFit
 
-Marketing and API shell for **Fit Claw**: a retention-focused coaching extension (OpenClaw orchestration + central Postgres) for gyms, personal trainers, and nutrition coaches.
+Marketing and API shell for **GetFit**: a retention-focused coaching extension (OpenClaw orchestration + central Postgres) for gyms, personal trainers, and nutrition coaches.
 
 ## Stack
 

@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
     const script = `#!/usr/bin/env bash
 set -euo pipefail
-echo "Fit Claw: payment verified for session ${sessionId}"
+echo "GetFit: payment verified for session ${sessionId}"
 echo "Replace this script with your OpenClaw install steps."
 `;
 

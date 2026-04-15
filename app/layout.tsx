@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fit Claw — retention & adherence for coaches",
+  title: "GetFit — retention & adherence for coaches",
   description:
-    "Chat-first coaching extension for gyms, PTs, and nutrition coaches. OpenClaw orchestration, central Postgres, adherence and at-risk visibility.",
+    "Chat-first coaching extension for gyms, PTs, and nutrition coaches. Daily accountability, adherence visibility, and at-risk signals.",
 };
 
 export default function RootLayout({

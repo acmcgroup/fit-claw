@@ -23,7 +23,7 @@ const STEPS = [
   },
   {
     n: "02",
-    title: "Fit Claw runs the daily loop",
+    title: "GetFit runs the daily loop",
     desc: "Morning focus, midday correction, evening review—sent automatically in your coaching tone.",
   },
   {
@@ -43,13 +43,13 @@ const OUTCOMES = [
 const TESTIMONIALS = [
   {
     quote:
-      "I used to spend Sunday nights writing individual check-ins. Now Fit Claw handles the daily loop and I only message clients when there's a real reason. Retention went up noticeably in the first month.",
+      "I used to spend Sunday nights writing individual check-ins. Now GetFit handles the daily loop and I only message clients when there's a real reason. Retention went up noticeably in the first month.",
     name: "Marco V.",
     role: "Personal Trainer · 34 active clients",
   },
   {
     quote:
-      "My nutrition clients would lose momentum between sessions. With Fit Claw they get a nudge at the right moment—without it feeling generic. The weekly summaries keep them engaged and accountable.",
+      "My nutrition clients would lose momentum between sessions. With GetFit they get a nudge at the right moment—without it feeling generic. The weekly summaries keep them engaged and accountable.",
     name: "Sofia R.",
     role: "Nutrition Coach · Online practice",
   },
@@ -73,8 +73,8 @@ const FEATURES = [
 
 const FAQS = [
   {
-    q: "What is Fit Claw and who is it for?",
-    a: "Fit Claw is a coaching retention system for personal trainers, nutrition coaches, and PT studios. It automates daily client communication and surfaces the data you need to reduce churn and grow revenue.",
+    q: "What is GetFit and who is it for?",
+    a: "GetFit is a coaching retention system for personal trainers, nutrition coaches, and PT studios. It automates daily client communication and surfaces the data you need to reduce churn and grow revenue.",
   },
   {
     q: "Does my client need to install anything?",
@@ -96,7 +96,7 @@ export default function Home() {
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-20 border-b border-zinc-100 bg-white/90 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <span className="text-base font-semibold tracking-tight">Fit Claw</span>
+          <span className="text-base font-semibold tracking-tight">GetFit</span>
           <nav className="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
             <a href="#how-it-works" className="hidden sm:inline hover:text-zinc-900 dark:hover:text-zinc-100">
               How it works
@@ -126,7 +126,7 @@ export default function Home() {
             You stop chasing them.
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Fit Claw sends the right message to every client, every day—check-ins,
+            GetFit sends the right message to every client, every day—check-ins,
             habit nudges, nutrition reminders—so you coach more people without losing
             the personal touch.
           </p>
@@ -354,7 +354,7 @@ export default function Home() {
       {/* ── Footer ─────────────────────────────────────────────────── */}
       <footer className="border-t border-zinc-100 py-8 dark:border-zinc-800">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-4 text-xs text-zinc-400 sm:flex-row sm:px-6">
-          <span>Fit Claw © {new Date().getFullYear()}</span>
+          <span>GetFit © {new Date().getFullYear()}</span>
           <nav className="flex gap-4">
             <a href="#" className="hover:text-zinc-600 dark:hover:text-zinc-300">Privacy</a>
             <a href="#" className="hover:text-zinc-600 dark:hover:text-zinc-300">Terms</a>
