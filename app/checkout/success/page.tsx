@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { getSiteUrl } from "@/lib/site-url";
-import { getStripe } from "@/lib/stripe-server";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { customers, orders } from "@/db/schema";
 
 type Props = {
   searchParams: Promise<{ session_id?: string }>;
@@ -23,17 +24,16 @@ export default async function CheckoutSuccess({ searchParams }: Props) {
   let paid = false;
   let customerEmail: string | null = null;
 
-  try {
-    const stripe = getStripe();
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-    paid = session.payment_status === "paid";
-    customerEmail = session.customer_details?.email ?? session.customer_email ?? null;
-  } catch {
-    paid = false;
-  }
+  const [row] = await db
+    .select({ status: orders.status, email: customers.email })
+    .from(orders)
+    .innerJoin(customers, eq(orders.customerId, customers.id))
+    .where(eq(orders.stripeSessionId, sessionId));
 
-  const base = getSiteUrl();
-  const installUrl = `${base}/api/install-script?session_id=${encodeURIComponent(sessionId)}`;
+  if (row && row.status === "fulfilled") {
+    paid = true;
+    customerEmail = row.email ?? null;
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16">
@@ -46,11 +46,8 @@ export default async function CheckoutSuccess({ searchParams }: Props) {
       {paid ? (
         <>
           <p className="mt-6 text-sm text-zinc-700 dark:text-zinc-300">
-            Run this on your VM (session is verified server-side when you download the script):
+            Check your email for the install link. If you don&apos;t see it within a few minutes, check your spam folder.
           </p>
-          <pre className="mt-3 overflow-x-auto rounded-2xl border border-zinc-200 bg-zinc-950 p-4 text-xs text-emerald-100 dark:border-zinc-800">
-            {`curl -fsSL "${installUrl}" | bash`}
-          </pre>
         </>
       ) : (
         <p className="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
