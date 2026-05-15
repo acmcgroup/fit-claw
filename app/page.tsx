@@ -33,34 +33,6 @@ const STEPS = [
   },
 ];
 
-const OUTCOMES = [
-  { stat: "40%", label: "fewer dropouts in the first 90 days" },
-  { stat: "3×", label: "more client check-ins without extra time" },
-  { stat: "2×", label: "more clients at the same coaching quality" },
-  { stat: "Wk 8", label: "when upsell conversations open naturally" },
-];
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "I used to spend Sunday nights writing individual check-ins. Now GetFit handles the daily loop and I only message clients when there's a real reason. Retention went up noticeably in the first month.",
-    name: "Marco V.",
-    role: "Personal Trainer · 34 active clients",
-  },
-  {
-    quote:
-      "My nutrition clients would lose momentum between sessions. With GetFit they get a nudge at the right moment—without it feeling generic. The weekly summaries keep them engaged and accountable.",
-    name: "Sofia R.",
-    role: "Nutrition Coach · Online practice",
-  },
-  {
-    quote:
-      "We run a PT studio with five coaches. Before this, adherence tracking was spreadsheets and WhatsApp. Now every coach has a dashboard and we catch at-risk clients before they churn.",
-    name: "Daniel M.",
-    role: "Studio Owner · 3 coaches, 110 clients",
-  },
-];
-
 const FEATURES = [
   "Automated morning, midday, and evening client messages",
   "Habit logging, meal logging, hydration, and workout tracking",
@@ -82,11 +54,11 @@ const FAQS = [
   },
   {
     q: "Is my data safe?",
-    a: "All data is stored in an encrypted, GDPR-compliant database. Client information is never used for advertising or shared with third parties.",
+    a: "We take data privacy seriously. Client information is never used for advertising or shared with third parties.",
   },
   {
     q: "What happens if I cancel?",
-    a: "Cancel any time from your dashboard. Your data is exported on request. No hidden fees, no notice period.",
+    a: "Cancel any time by contacting us. Your data is exported on request. No hidden fees, no notice period.",
   },
 ];
 
@@ -240,46 +212,6 @@ export default function Home() {
           </ol>
         </section>
 
-        {/* ── Outcomes ───────────────────────────────────────────────── */}
-        <section className="bg-zinc-900 py-16 text-white dark:bg-zinc-800">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              Real results for coaches who use systems.
-            </h2>
-            <ul className="mt-10 grid gap-6 sm:grid-cols-4">
-              {OUTCOMES.map(({ stat, label }) => (
-                <li key={label}>
-                  <p className="text-4xl font-bold text-emerald-400">{stat}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-zinc-300">{label}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── Social proof ───────────────────────────────────────────── */}
-        <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Coaches who made the switch.
-          </h2>
-          <ul className="mt-10 grid gap-6 sm:grid-cols-3">
-            {TESTIMONIALS.map(({ quote, name, role }) => (
-              <li
-                key={name}
-                className="rounded-2xl border border-zinc-100 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900"
-              >
-                <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                  &ldquo;{quote}&rdquo;
-                </p>
-                <div className="mt-4 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-                  <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{name}</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{role}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
         {/* ── Pricing ────────────────────────────────────────────────── */}
         <section id="pricing" className="bg-zinc-50 py-16 dark:bg-zinc-900/40">
           <div className="mx-auto max-w-lg px-4 text-center sm:px-6">
@@ -339,7 +271,7 @@ export default function Home() {
               The one after that too.
             </h2>
             <p className="mt-4 text-zinc-400">
-              Start your free 14-day trial. No credit card required.
+              Start your free 14-day trial.
             </p>
             <Link
               href="/api/checkout"
