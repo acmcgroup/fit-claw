@@ -18,3 +18,15 @@ export const orders = pgTable("orders", {
   tokenUsedAt: timestamp("token_used_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const coachProfiles = pgTable("coach_profiles", {
+  id: serial("id").primaryKey(),
+  orderId: integer("order_id")
+    .notNull()
+    .unique()
+    .references(() => orders.id),
+  name: text("name").notNull(),
+  whatsappPhone: text("whatsapp_phone").notNull(),
+  coachingTone: text("coaching_tone").notNull().default("professional"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

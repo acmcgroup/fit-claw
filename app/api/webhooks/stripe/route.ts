@@ -5,7 +5,7 @@ import { getStripe } from "@/lib/stripe-server";
 import { db } from "@/db/index";
 import { customers, orders } from "@/db/schema";
 import { generateInstallToken } from "@/lib/token";
-import { sendInstallEmail } from "@/lib/email";
+import { sendOnboardingEmail } from "@/lib/email";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
@@ -78,8 +78,8 @@ export async function POST(request: Request) {
         .set({ tokenHash: hash, status: "fulfilled" })
         .where(eq(orders.id, order.id));
 
-      const installUrl = `${getSiteUrl()}/api/install-script?session_id=${session.id}&token=${token}`;
-      await sendInstallEmail(email, installUrl);
+      const onboardingUrl = `${getSiteUrl()}/onboarding?session_id=${encodeURIComponent(session.id)}&token=${encodeURIComponent(token)}`;
+      await sendOnboardingEmail(email, onboardingUrl);
 
       console.log("[stripe webhook] checkout fulfilled", session.id, email);
     } catch (err) {
