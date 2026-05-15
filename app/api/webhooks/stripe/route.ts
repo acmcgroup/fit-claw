@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { eq } from "drizzle-orm";
 import { getStripe } from "@/lib/stripe-server";
+import { db } from "@/db/index";
+import { customers, orders } from "@/db/schema";
+import { generateInstallToken } from "@/lib/token";
+import { sendInstallEmail } from "@/lib/email";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 
@@ -37,8 +43,48 @@ export async function POST(request: Request) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    // Fulfillment: persist order, email install link, issue one-time tokens, etc.
-    console.log("[stripe webhook] checkout completed", session.id, session.customer_email);
+
+    try {
+      const email = session.customer_details?.email ?? session.customer_email;
+      if (!email) {
+        console.warn("[stripe webhook] checkout.session.completed missing email, skipping", session.id);
+        return NextResponse.json({ received: true });
+      }
+
+      const stripeCustomerId = session.customer as string;
+
+      await db
+        .insert(customers)
+        .values({ stripeCustomerId, email })
+        .onConflictDoUpdate({
+          target: customers.stripeCustomerId,
+          set: { stripeCustomerId },
+        });
+
+      const [customer] = await db
+        .select({ id: customers.id })
+        .from(customers)
+        .where(eq(customers.stripeCustomerId, stripeCustomerId));
+
+      const [order] = await db
+        .insert(orders)
+        .values({ customerId: customer.id, stripeSessionId: session.id, status: "pending" })
+        .returning({ id: orders.id });
+
+      const { token, hash } = generateInstallToken(session.id);
+
+      await db
+        .update(orders)
+        .set({ tokenHash: hash, status: "fulfilled" })
+        .where(eq(orders.id, order.id));
+
+      const installUrl = `${getSiteUrl()}/api/install-script?session_id=${session.id}&token=${token}`;
+      await sendInstallEmail(email, installUrl);
+
+      console.log("[stripe webhook] checkout fulfilled", session.id, email);
+    } catch (err) {
+      console.error("[stripe webhook] fulfillment error", session.id, err);
+    }
   }
 
   return NextResponse.json({ received: true });
