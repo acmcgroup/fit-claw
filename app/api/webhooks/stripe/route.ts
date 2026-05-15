@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   if (!secret) {
     return NextResponse.json(
       { error: "STRIPE_WEBHOOK_SECRET is not configured" },
-      { status: 501 },
+      { status: 503 },
     );
   }
 

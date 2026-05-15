@@ -21,10 +21,11 @@ export async function GET() {
   try {
     const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+      mode: "subscription",
       line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      subscription_data: { trial_period_days: 14 },
       success_url: `${base}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/#checkout`,
+      cancel_url: `${base}/#pricing`,
     });
 
     if (!session.url) {
