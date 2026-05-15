@@ -1,0 +1,7 @@
+{
+  "crons": [
+    { "path": "/api/whatsapp/send/morning", "schedule": "0 7 * * *" },
+    { "path": "/api/whatsapp/send/midday", "schedule": "0 12 * * *" },
+    { "path": "/api/whatsapp/send/evening", "schedule": "0 20 * * *" }
+  ]
+}
