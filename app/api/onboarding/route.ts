@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
+import { randomBytes } from "crypto";
 import { db } from "@/db/index";
 import { orders, coachProfiles } from "@/db/schema";
 import { verifyInstallToken } from "@/lib/token";
@@ -55,11 +56,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Token already used" }, { status: 403 });
   }
 
+  const manageSecret = randomBytes(20).toString("hex");
+
   await db.insert(coachProfiles).values({
     orderId: order.id,
     name: name.trim(),
     whatsappPhone: whatsappPhone.trim(),
     coachingTone: coachingTone.trim(),
+    manageSecret,
   });
 
   await db
@@ -67,5 +71,5 @@ export async function POST(request: Request) {
     .set({ tokenUsedAt: new Date() })
     .where(eq(orders.id, order.id));
 
-  return NextResponse.redirect(new URL("/onboarding/done", request.url));
+  return NextResponse.redirect(new URL(`/onboarding/done?manage_secret=${manageSecret}`, request.url));
 }

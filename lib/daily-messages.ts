@@ -1,45 +1,45 @@
 import { formatWhatsAppNumber, sendWhatsAppTemplate } from "./whatsapp";
 
 export async function sendMorningMessage(
-  coachPhone: string,
-  coachName: string
+  clientPhone: string,
+  clientName: string
 ): Promise<void> {
   const templateSid = process.env.TWILIO_TEMPLATE_MORNING!;
-  await sendWhatsAppTemplate(formatWhatsAppNumber(coachPhone), templateSid, {
-    "1": coachName,
+  await sendWhatsAppTemplate(formatWhatsAppNumber(clientPhone), templateSid, {
+    "1": clientName,
   });
 }
 
 export async function sendMiddayMessage(
-  coachPhone: string,
-  coachName: string
+  clientPhone: string,
+  clientName: string
 ): Promise<void> {
   const templateSid = process.env.TWILIO_TEMPLATE_MIDDAY!;
-  await sendWhatsAppTemplate(formatWhatsAppNumber(coachPhone), templateSid, {
-    "1": coachName,
+  await sendWhatsAppTemplate(formatWhatsAppNumber(clientPhone), templateSid, {
+    "1": clientName,
   });
 }
 
 export async function sendEveningMessage(
-  coachPhone: string,
-  coachName: string
+  clientPhone: string,
+  clientName: string
 ): Promise<void> {
   const templateSid = process.env.TWILIO_TEMPLATE_EVENING!;
-  await sendWhatsAppTemplate(formatWhatsAppNumber(coachPhone), templateSid, {
-    "1": coachName,
+  await sendWhatsAppTemplate(formatWhatsAppNumber(clientPhone), templateSid, {
+    "1": clientName,
   });
 }
 
 export async function sendDailyMessage(
   type: "morning" | "midday" | "evening",
-  coachPhone: string,
-  coachName: string
+  clientPhone: string,
+  clientName: string
 ): Promise<void> {
   if (type === "morning") {
-    await sendMorningMessage(coachPhone, coachName);
+    await sendMorningMessage(clientPhone, clientName);
   } else if (type === "midday") {
-    await sendMiddayMessage(coachPhone, coachName);
+    await sendMiddayMessage(clientPhone, clientName);
   } else {
-    await sendEveningMessage(coachPhone, coachName);
+    await sendEveningMessage(clientPhone, clientName);
   }
 }

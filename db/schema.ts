@@ -28,5 +28,17 @@ export const coachProfiles = pgTable("coach_profiles", {
   name: text("name").notNull(),
   whatsappPhone: text("whatsapp_phone").notNull(),
   coachingTone: text("coaching_tone").notNull().default("professional"),
+  manageSecret: text("manage_secret").unique().notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const clients = pgTable("clients", {
+  id: serial("id").primaryKey(),
+  coachProfileId: integer("coach_profile_id")
+    .notNull()
+    .references(() => coachProfiles.id),
+  name: text("name").notNull(),
+  whatsappPhone: text("whatsapp_phone").notNull(),
+  status: text("status").notNull().default("active"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
