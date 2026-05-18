@@ -6,8 +6,8 @@ import { sendDailyMessage } from "@/lib/daily-messages";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const cronSecret = request.headers.get("x-cron-secret");
-  if (cronSecret !== process.env.CRON_SECRET) {
+  const auth = request.headers.get("authorization");
+  if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return new Response("Unauthorized", { status: 401 });
   }
 
