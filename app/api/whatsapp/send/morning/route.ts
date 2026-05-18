@@ -15,6 +15,7 @@ export async function GET(request: Request) {
     .select({
       name: clients.name,
       whatsappPhone: clients.whatsappPhone,
+      coachingTone: coachProfiles.coachingTone,
     })
     .from(clients)
     .innerJoin(coachProfiles, eq(clients.coachProfileId, coachProfiles.id))
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
   let sent = 0;
   for (const client of activeClients) {
     try {
-      await sendDailyMessage("morning", client.whatsappPhone, client.name);
+      await sendDailyMessage("morning", client.whatsappPhone, client.name, client.coachingTone);
       sent++;
     } catch (err) {
       console.error("[whatsapp send morning] error for", client.whatsappPhone, err);

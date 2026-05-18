@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getStripe } from "@/lib/stripe-server";
 import { db } from "@/db/index";
 import { customers, orders } from "@/db/schema";
@@ -84,6 +84,55 @@ export async function POST(request: Request) {
       console.log("[stripe webhook] checkout fulfilled", session.id, email);
     } catch (err) {
       console.error("[stripe webhook] fulfillment error", session.id, err);
+    }
+  }
+
+  if (event.type === "customer.subscription.deleted") {
+    const subscription = event.data.object as Stripe.Subscription;
+    const stripeCustomerId = typeof subscription.customer === "string"
+      ? subscription.customer
+      : subscription.customer.id;
+
+    try {
+      const [customer] = await db
+        .select({ id: customers.id })
+        .from(customers)
+        .where(eq(customers.stripeCustomerId, stripeCustomerId));
+
+      if (customer) {
+        await db.update(orders).set({ status: "cancelled" }).where(eq(orders.customerId, customer.id));
+      }
+
+      console.log("[stripe webhook] subscription cancelled", stripeCustomerId);
+    } catch (err) {
+      console.error("[stripe webhook] subscription.deleted error", stripeCustomerId, err);
+    }
+  }
+
+  if (event.type === "invoice.payment_failed") {
+    const invoice = event.data.object as Stripe.Invoice;
+    const stripeCustomerId = typeof invoice.customer === "string"
+      ? invoice.customer
+      : invoice.customer?.id;
+
+    if (stripeCustomerId) {
+      try {
+        const [customer] = await db
+          .select({ id: customers.id })
+          .from(customers)
+          .where(eq(customers.stripeCustomerId, stripeCustomerId));
+
+        if (customer) {
+          await db
+            .update(orders)
+            .set({ status: "payment_failed" })
+            .where(and(eq(orders.customerId, customer.id), eq(orders.status, "fulfilled")));
+        }
+
+        console.log("[stripe webhook] payment failed", stripeCustomerId);
+      } catch (err) {
+        console.error("[stripe webhook] invoice.payment_failed error", stripeCustomerId, err);
+      }
     }
   }
 
